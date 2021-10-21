@@ -1,29 +1,45 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { FacturasService } from '../services/facturas.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { facturasDto, UpdateFacturasDto } from '../dtos/facturas.dto';
 
 @Controller('facturas')
 export class FacturasController {
-    @Get()
-    getAll(){
-        return [1,2,3,4]
-    }
+  constructor(private facturasService: FacturasService) {}
 
-    @Get(':id')
-    getOne(@Param('id') id:number){
-        return id;
-    }
+  @Get()
+  getAll(): Promise<facturasDto[]> {
+    return this.facturasService.findAll();
+  }
 
-    @Post()
-    create(@Body() body: any){
-        return body;
-    }
+  @Get(':id')
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<facturasDto> {
+    return this.facturasService.findOne(id);
+  }
 
-    @Put(':id')
-    update(@Param('id') id: number, @Body() body: any){
-        return body;
-    }
+  @Post()
+  create(@Body() body: facturasDto): Promise<facturasDto> {
+    return this.facturasService.create(body);
+  }
 
-    @Delete(':id')
-    delete (@Param('id') id: number){
-        return true
-    }
+  @Put(':id')
+  update(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() body: UpdateFacturasDto,
+  ): Promise<facturasDto> {
+    return this.facturasService.update(id, body);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', new ParseIntPipe()) id: number): Promise<boolean> {
+    return this.facturasService.delete(id);
+  }
 }

@@ -1,36 +1,45 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
-import {ClientesService} from '../services/clientes.service';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { clientesDto, UpdateClientesDto } from '../dtos/clientes.dto';
+import { ClientesService } from '../services/clientes.service';
 
 @Controller('clientes')
 export class ClientesController {
+  constructor(private clientesService: ClientesService) {}
 
-    constructor(
-        private ClientesService: ClientesService
-    ){}
+  @Get()
+  getAll(): Promise<clientesDto[]> {
+    return this.clientesService.findAll();
+  }
 
-    @Get()
-    getAll(){
-        return this.ClientesService.findAll();
-    }
+  @Get(':id')
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<clientesDto> {
+    return this.clientesService.findOne(id);
+  }
 
-    @Get(':id')
-    getOne(@Param('id') id:number){
-        return this.ClientesService.findOne(id);
-    }
+  @Post()
+  create(@Body() body: clientesDto): Promise<clientesDto> {
+    return this.clientesService.create(body);
+  }
 
-    @Post()
-    create(@Body() body: any){
-        return this.ClientesService.create(body);;
-    }
+  @Put(':id')
+  update(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() body: UpdateClientesDto,
+  ): Promise<clientesDto> {
+    return this.clientesService.update(id, body);
+  }
 
-    @Put(':id')
-    update(@Param('id') id: number, @Body() body: any){
-        return this.ClientesService.update(id,body);
-    }
-
-    @Delete(':id')
-    delete (@Param('id') id: number){
-        return this.ClientesService.delete(id);
-    }
-
+  @Delete(':id')
+  delete(@Param('id', new ParseIntPipe()) id: number): Promise<boolean> {
+    return this.clientesService.delete(id);
+  }
 }
