@@ -29,6 +29,7 @@
     "migrations:show": "yarn typeorm migration:show",
     "migrations:drop": "yarn typeorm schema:drop",
     "migrations:revert": "yarn typeorm migration:revert"
+
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.1",
