@@ -18,7 +18,7 @@ export class facturas {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_factura' })
   public id_factura: number;
 
-  @OneToMany(() => detalles, (detalles) => detalles.idFactura)
+  @OneToMany(() => detalles, (detalles) => detalles.id_factura)
   public detalles: detalles[];
 
   @ManyToOne(() => clientes, (clientes) => clientes.facturas)

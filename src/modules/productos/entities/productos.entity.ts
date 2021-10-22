@@ -15,7 +15,7 @@ export class productos {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_producto' })
   public id_producto: number;
 
-  @OneToMany(() => detalles, (detalles) => detalles.idProducto)
+  @OneToMany(() => detalles, (detalles) => detalles.id_producto)
   public detalles: detalles[];
 
   @Index({ unique: true })

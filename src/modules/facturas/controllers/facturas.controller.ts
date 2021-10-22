@@ -25,9 +25,10 @@ export class FacturasController {
     return this.facturasService.findOne(id);
   }
 
-  @Post()
-  create(@Body() body: facturasDto): Promise<facturasDto> {
-    return this.facturasService.create(body);
+  @Post('registrar')
+  create(@Body() body: any): any {
+    // return this.facturasService.create(body);
+    return '234';
   }
 
   @Put(':id')

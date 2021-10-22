@@ -41,30 +41,30 @@ export class FacturasService {
   }
 
   //Crea un recurso
-  async create(body: facturasDto): Promise<facturasDto> {
-    if (body === null || body === undefined) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          message: 'No proporcionó un id',
-          content: false,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    const newData = this.facturasRepo.create(body);
-    //Validar que la tipo cliente exista
-    // if (body.id_cliente) {
-    //   const id_cliente = await this.clientesRepo.findOne(body.id_cliente);
-    //   newData. = id_cliente;
-    // }
-    // //Validar que la lista de mascotas exista
-    // if (body.id_modo_pago) {
-    //   const id_modo_pago = await this.modospagosRepo.findByIds(body.id_modo_pago);
-    //   newData.id_modo_pago = id_modo_pago;
-    // }
-    return await this.facturasRepo.save(newData);
-  }
+  // async create(body: facturasDto): Promise<facturasDto> {
+  //   if (body === null || body === undefined) {
+  //     throw new HttpException(
+  //       {
+  //         status: HttpStatus.BAD_REQUEST,
+  //         message: 'No proporcionó un id',
+  //         content: false,
+  //       },
+  //       HttpStatus.BAD_REQUEST,
+  //     );
+  //   }
+  //   const newData = this.facturasRepo.create(body);
+  //   //Validar que la tipo cliente exista
+  //   // if (body.id_cliente) {
+  //   //   const id_cliente = await this.clientesRepo.findOne(body.id_cliente);
+  //   //   newData. = id_cliente;
+  //   // }
+  //   // //Validar que la lista de mascotas exista
+  //   // if (body.id_modo_pago) {
+  //   //   const id_modo_pago = await this.modospagosRepo.findByIds(body.id_modo_pago);
+  //   //   newData.id_modo_pago = id_modo_pago;
+  //   // }
+  //   return await this.facturasRepo.save(newData);
+  // }
 
   //Actualiza un recurso
   async update(id: number, body: UpdateFacturasDto): Promise<facturasDto> {

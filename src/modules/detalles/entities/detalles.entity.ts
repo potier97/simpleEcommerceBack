@@ -11,18 +11,18 @@ import {
 } from 'typeorm';
 import { facturas } from '../../facturas/entities/facturas.entity';
 
-@Entity()
+@Entity({ name: 'detalles' })
 export class detalles {
-  @PrimaryGeneratedColumn()
-  public id_cliente: number;
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'id_detalle' })
+  public id_detalle: number;
 
   @ManyToOne(() => facturas, (facturas) => facturas.detalles)
   @JoinColumn({ name: 'id_factura' })
-  public idFactura: facturas;
+  public id_factura: facturas;
 
   @ManyToOne(() => productos, (productos) => productos.detalles)
   @JoinColumn({ name: 'id_producto' })
-  public idProducto: productos;
+  public id_producto: productos;
 
   @Column({ type: 'varchar', length: 50, nullable: false, name: 'nombre' })
   public nombre: string;
