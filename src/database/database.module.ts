@@ -20,7 +20,7 @@ console.log(process.env.NODE_ENV);
           password: password,
           database: dbName,
           entities: ['dist/**/*.entity{.ts,.js}'],
-          synchronize: true,
+          synchronize: false,
           retryDelay: 3000,
           retryAttempts: 10,
           autoLoadEntities: true,
