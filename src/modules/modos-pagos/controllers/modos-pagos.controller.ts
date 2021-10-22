@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { modosPagosDto, UpdatModosPagosDto } from '../dtos/modospagos.dto';
 
-@Controller('modos-pagos')
+@Controller('modos_pagos')
 export class ModosPagosController {
   constructor(private modosPagosService: ModosPagosService) {}
 
