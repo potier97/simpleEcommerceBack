@@ -54,21 +54,15 @@ export class FacturasService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      const iva: number = body.total - body.subtotal;
-      const newData = this.facturasRepo.create({
-        fecha: new Date(),
-        subtotal: body.subtotal,
-        total: body.total,
-        iva: iva,
-      });
+      const newData = this.facturasRepo.create(body);
       //Validar que la tipo cliente exista
       if (body.cliente) {
         const id_cliente = await this.clientesRepo.findOne(body.cliente);
         newData.id_cliente = id_cliente;
       }
       //Validar que el tipo de pago exista
-      if (body.modoPago) {
-        const id_modo_pago = await this.modospagosRepo.findOne(body.modoPago);
+      if (body.modopago) {
+        const id_modo_pago = await this.modospagosRepo.findOne(body.modopago);
         newData.id_modo_pago = id_modo_pago;
       }
       return await this.facturasRepo.save(newData);
