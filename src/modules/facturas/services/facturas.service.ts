@@ -2,7 +2,7 @@ import { clientes } from '@modules/clientes/entities/clientes.entity';
 import { modospagos } from '@modules/modos-pagos/entities/modospagos.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Transaction } from 'typeorm';
 import { facturasDto, UpdateFacturasDto } from '../dtos/facturas.dto';
 import { facturas } from '../entities/facturas.entity';
 
@@ -41,48 +41,42 @@ export class FacturasService {
   }
 
   //Crea un recurso
-  // async create(body: facturasDto): Promise<facturasDto> {
-  //   if (body === null || body === undefined) {
-  //     throw new HttpException(
-  //       {
-  //         status: HttpStatus.BAD_REQUEST,
-  //         message: 'No proporcionó un id',
-  //         content: false,
-  //       },
-  //       HttpStatus.BAD_REQUEST,
-  //     );
-  //   }
-  //   const newData = this.facturasRepo.create(body);
-  //   //Validar que la tipo cliente exista
-  //   // if (body.id_cliente) {
-  //   //   const id_cliente = await this.clientesRepo.findOne(body.id_cliente);
-  //   //   newData. = id_cliente;
-  //   // }
-  //   // //Validar que la lista de mascotas exista
-  //   // if (body.id_modo_pago) {
-  //   //   const id_modo_pago = await this.modospagosRepo.findByIds(body.id_modo_pago);
-  //   //   newData.id_modo_pago = id_modo_pago;
-  //   // }
-  //   return await this.facturasRepo.save(newData);
-  // }
-
-  //Actualiza un recurso
-  async update(id: number, body: UpdateFacturasDto): Promise<facturasDto> {
-    const result = await this.facturasRepo.findOne(id, {
-      relations: ['id_cliente', 'id_modo_pago'],
-    });
-    if (!result) {
+  @Transaction()
+  async create(body: any): Promise<any> {
+    const idCliente = body.id_cliente;
+    const idModoPago = body.id_modo_pago;
+    if (
+      (body === null || body === undefined) &&
+      idCliente === undefined &&
+      idModoPago === undefined
+    ) {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
-          message: 'No encontrado',
+          message: 'No proporcionó datos',
           content: false,
         },
         HttpStatus.BAD_REQUEST,
       );
     }
-    this.facturasRepo.merge(result, body);
-    return await this.facturasRepo.save(result);
+
+    const newData = this.facturasRepo.create({
+      fecha: new Date(),
+      subtotal: 20000,
+      total: 25000,
+      iva: 50000,
+    });
+    //Validar que la tipo cliente exista
+    if (idCliente) {
+      const id_cliente = await this.clientesRepo.findOne(idCliente);
+      newData.id_cliente = id_cliente;
+    }
+    //Validar que el tipo de pago exista
+    if (idModoPago) {
+      const id_modo_pago = await this.modospagosRepo.findOne(idModoPago);
+      newData.id_modo_pago = id_modo_pago;
+    }
+    return await this.facturasRepo.save(newData);
   }
 
   //elimina un recurso

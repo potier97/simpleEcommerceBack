@@ -27,16 +27,7 @@ export class FacturasController {
 
   @Post('registrar')
   create(@Body() body: any): any {
-    // return this.facturasService.create(body);
-    return '234';
-  }
-
-  @Put(':id')
-  update(
-    @Param('id', new ParseIntPipe()) id: number,
-    @Body() body: UpdateFacturasDto,
-  ): Promise<facturasDto> {
-    return this.facturasService.update(id, body);
+    return this.facturasService.create(body);
   }
 
   @Delete(':id')
