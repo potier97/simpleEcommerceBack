@@ -44,11 +44,17 @@ export class FacturasService {
   @Transaction()
   async create(body: any): Promise<any> {
     try {
-      const idCliente = parseInt(body.id_cliente);
-      const idModoPago = parseInt(body.id_modo_pago);
-      const subtotal = parseInt(body.factura_subtotal);
-      const total = parseInt(body.factura_total);
-      const iva = total - subtotal;
+      const idCliente: number = Number.parseInt(body.id_cliente, 10);
+      const idModoPago: number = Number.parseInt(body.id_modo_pago, 10);
+      const subtotal: number = Number.parseInt(body.factura_subtotal, 10);
+      const total: number = Number.parseInt(body.factura_total, 10);
+      const iva: number = total - subtotal;
+      console.log('Valores');
+      console.log('idCliente ', idCliente);
+      console.log('idModoPago ', idModoPago);
+      console.log('subtotal ', subtotal);
+      console.log('total ', total);
+      console.log('iva ', iva);
       if (
         (body === null || body === undefined) &&
         idCliente === undefined &&
@@ -65,7 +71,6 @@ export class FacturasService {
           HttpStatus.BAD_REQUEST,
         );
       }
-
       const newData = this.facturasRepo.create({
         fecha: new Date(),
         subtotal: subtotal,
