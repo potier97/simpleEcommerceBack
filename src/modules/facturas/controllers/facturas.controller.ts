@@ -7,9 +7,8 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
 } from '@nestjs/common';
-import { facturasDto, UpdateFacturasDto } from '../dtos/facturas.dto';
+import { facturasDto, RegistrosDto } from '../dtos/facturas.dto';
 
 @Controller('facturas')
 export class FacturasController {
@@ -26,7 +25,7 @@ export class FacturasController {
   }
 
   @Post('registrar')
-  create(@Body() body: any): any {
+  create(@Body() body: RegistrosDto): Promise<facturasDto> {
     return this.facturasService.create(body);
   }
 

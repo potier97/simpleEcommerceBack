@@ -3,7 +3,7 @@ import { modospagos } from '@modules/modos-pagos/entities/modospagos.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Transaction } from 'typeorm';
-import { facturasDto, UpdateFacturasDto } from '../dtos/facturas.dto';
+import { facturasDto, RegistrosDto } from '../dtos/facturas.dto';
 import { facturas } from '../entities/facturas.entity';
 
 @Injectable()
@@ -42,26 +42,9 @@ export class FacturasService {
 
   //Crea un recurso
   @Transaction()
-  async create(body: any): Promise<any> {
+  async create(body: RegistrosDto): Promise<facturasDto> {
     try {
-      const idCliente: number = Number.parseInt(body.id_cliente, 10);
-      const idModoPago: number = Number.parseInt(body.id_modo_pago, 10);
-      const subtotal: number = Number.parseInt(body.factura_subtotal, 10);
-      const total: number = Number.parseInt(body.factura_total, 10);
-      const iva: number = total - subtotal;
-      console.log('Valores');
-      console.log('idCliente ', idCliente);
-      console.log('idModoPago ', idModoPago);
-      console.log('subtotal ', subtotal);
-      console.log('total ', total);
-      console.log('iva ', iva);
-      if (
-        (body === null || body === undefined) &&
-        idCliente === undefined &&
-        idModoPago === undefined &&
-        subtotal === undefined &&
-        total === undefined
-      ) {
+      if (body === null || body === undefined) {
         throw new HttpException(
           {
             status: HttpStatus.BAD_REQUEST,
@@ -71,20 +54,21 @@ export class FacturasService {
           HttpStatus.BAD_REQUEST,
         );
       }
+      const iva: number = body.total - body.subtotal;
       const newData = this.facturasRepo.create({
         fecha: new Date(),
-        subtotal: subtotal,
-        total: total,
+        subtotal: body.subtotal,
+        total: body.total,
         iva: iva,
       });
       //Validar que la tipo cliente exista
-      if (idCliente) {
-        const id_cliente = await this.clientesRepo.findOne(idCliente);
+      if (body.cliente) {
+        const id_cliente = await this.clientesRepo.findOne(body.cliente);
         newData.id_cliente = id_cliente;
       }
       //Validar que el tipo de pago exista
-      if (idModoPago) {
-        const id_modo_pago = await this.modospagosRepo.findOne(idModoPago);
+      if (body.modoPago) {
+        const id_modo_pago = await this.modospagosRepo.findOne(body.modoPago);
         newData.id_modo_pago = id_modo_pago;
       }
       return await this.facturasRepo.save(newData);
