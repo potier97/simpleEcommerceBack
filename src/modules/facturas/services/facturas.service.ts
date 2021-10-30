@@ -41,8 +41,7 @@ export class FacturasService {
   }
 
   //Crea un recurso
-  @Transaction()
-  async create(body: RegistrosDto): Promise<facturasDto> {
+  async create(body: RegistrosDto): Promise<any> {
     try {
       if (body === null || body === undefined) {
         throw new HttpException(
@@ -55,7 +54,9 @@ export class FacturasService {
         );
       }
       const newData = this.facturasRepo.create(body);
-      //Validar que la tipo cliente exista
+      newData.iva = body.total - body.subtotal;
+      newData.fecha = new Date();
+      // Validar que la tipo cliente exista
       if (body.cliente) {
         const id_cliente = await this.clientesRepo.findOne(body.cliente);
         newData.id_cliente = id_cliente;

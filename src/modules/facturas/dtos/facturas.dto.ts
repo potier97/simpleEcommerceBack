@@ -69,15 +69,4 @@ export class RegistrosDto {
   @IsNotEmpty()
   @ApiProperty({ description: 'Subtotal de la compra' })
   public readonly subtotal: number;
-
-  @IsDate()
-  @IsNotEmpty()
-  @ApiProperty({ description: 'Fecha de la compra' })
-  public readonly fecha: Date;
-
-  @IsNumber()
-  @IsPositive()
-  @IsNotEmpty()
-  @ApiProperty({ description: 'Iva de la compra' })
-  public readonly iva: number;
 }
