@@ -44,10 +44,10 @@ export class FacturasService {
   @Transaction()
   async create(body: any): Promise<any> {
     try {
-      const idCliente = Number.parseInt(body.id_cliente, 10);
-      const idModoPago = Number.parseInt(body.id_modo_pago, 10);
-      const subtotal = Number.parseInt(body.factura_subtotal, 10);
-      const total = Number.parseInt(body.factura_total, 10);
+      const idCliente = parseInt(body.id_cliente);
+      const idModoPago = parseInt(body.id_modo_pago);
+      const subtotal = parseInt(body.factura_subtotal);
+      const total = parseInt(body.factura_total);
       const iva = total - subtotal;
       if (
         (body === null || body === undefined) &&
@@ -84,6 +84,7 @@ export class FacturasService {
       }
       return await this.facturasRepo.save(newData);
     } catch (e) {
+      console.log(e);
       throw new HttpException(
         {
           status: HttpStatus.BAD_GATEWAY,
