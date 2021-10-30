@@ -43,40 +43,56 @@ export class FacturasService {
   //Crea un recurso
   @Transaction()
   async create(body: any): Promise<any> {
-    const idCliente = body.id_cliente;
-    const idModoPago = body.id_modo_pago;
-    if (
-      (body === null || body === undefined) &&
-      idCliente === undefined &&
-      idModoPago === undefined
-    ) {
+    try {
+      const idCliente = Number.parseInt(body.id_cliente, 10);
+      const idModoPago = Number.parseInt(body.id_modo_pago, 10);
+      const subtotal = Number.parseInt(body.factura_subtotal, 10);
+      const total = Number.parseInt(body.factura_total, 10);
+      const iva = total - subtotal;
+      if (
+        (body === null || body === undefined) &&
+        idCliente === undefined &&
+        idModoPago === undefined &&
+        subtotal === undefined &&
+        total === undefined
+      ) {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            message: 'No proporcionó datos',
+            content: false,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const newData = this.facturasRepo.create({
+        fecha: new Date(),
+        subtotal: subtotal,
+        total: total,
+        iva: iva,
+      });
+      //Validar que la tipo cliente exista
+      if (idCliente) {
+        const id_cliente = await this.clientesRepo.findOne(idCliente);
+        newData.id_cliente = id_cliente;
+      }
+      //Validar que el tipo de pago exista
+      if (idModoPago) {
+        const id_modo_pago = await this.modospagosRepo.findOne(idModoPago);
+        newData.id_modo_pago = id_modo_pago;
+      }
+      return await this.facturasRepo.save(newData);
+    } catch (e) {
       throw new HttpException(
         {
-          status: HttpStatus.BAD_REQUEST,
-          message: 'No proporcionó datos',
+          status: HttpStatus.BAD_GATEWAY,
+          message: 'Error interno',
           content: false,
         },
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.BAD_GATEWAY,
       );
     }
-
-    const newData = this.facturasRepo.create({
-      fecha: new Date(),
-      subtotal: 20000,
-      total: 25000,
-      iva: 50000,
-    });
-    //Validar que la tipo cliente exista
-    if (idCliente) {
-      const id_cliente = await this.clientesRepo.findOne(idCliente);
-      newData.id_cliente = id_cliente;
-    }
-    //Validar que el tipo de pago exista
-    if (idModoPago) {
-      const id_modo_pago = await this.modospagosRepo.findOne(idModoPago);
-      newData.id_modo_pago = id_modo_pago;
-    }
-    return await this.facturasRepo.save(newData);
   }
 
   //elimina un recurso
