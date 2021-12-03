@@ -1,18 +1,18 @@
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
-export class detallesDto {
-  // @IsNumber()
-  // @IsPositive()
-  // @IsNotEmpty()
-  // @ApiProperty({ description: 'Factura del cliente' })
-  // public readonly factura: number;
+export class DetallesDto {
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty({ description: 'Id de la compra registrada' })
+  public readonly idFactura: number;
 
-  // @IsNumber()
-  // @IsPositive()
-  // @IsNotEmpty()
-  // @ApiProperty({ description: 'producto del cliente' })
-  // public readonly producto: number;
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty({ description: 'Id del producto de la compra registrada' })
+  public readonly idProducto: number;
 
   @IsString()
   @IsNotEmpty()
@@ -30,6 +30,12 @@ export class detallesDto {
   @IsNotEmpty()
   @ApiProperty({ description: 'precio del producto' })
   public readonly precio: number;
+
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty({ description: 'Estado del dato' })
+  public readonly estado: number;
 }
 
-export class UpdateDetallesDto extends PartialType(detallesDto) {}
+export class UpdateDetallesDto extends PartialType(DetallesDto) {}

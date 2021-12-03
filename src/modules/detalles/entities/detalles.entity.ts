@@ -1,4 +1,3 @@
-import { productos } from '@modules/productos/entities/productos.entity';
 import { Exclude } from 'class-transformer';
 import {
   Entity,
@@ -10,19 +9,20 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { facturas } from '../../facturas/entities/facturas.entity';
+import { productos } from '@modules/productos/entities/productos.entity';
 
 @Entity({ name: 'detalles' })
 export class detalles {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_detalle' })
-  public id_detalle: number;
+  public id: number;
 
   @ManyToOne(() => facturas, (facturas) => facturas.detalles)
   @JoinColumn({ name: 'id_factura' })
-  public id_factura: facturas;
+  public idFactura: facturas;
 
   @ManyToOne(() => productos, (productos) => productos.detalles)
   @JoinColumn({ name: 'id_producto' })
-  public id_producto: productos;
+  public idProducto: productos;
 
   @Column({ type: 'varchar', length: 50, nullable: false, name: 'nombre' })
   public nombre: string;
@@ -32,6 +32,9 @@ export class detalles {
 
   @Column({ type: 'integer', default: 0, nullable: false, name: 'precio' })
   public precio: number;
+
+  @Column({ type: 'integer', default: 1, nullable: false, name: 'estado' })
+  public estado: number;
 
   @Exclude()
   @CreateDateColumn({

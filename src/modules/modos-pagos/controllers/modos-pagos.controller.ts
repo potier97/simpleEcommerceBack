@@ -9,24 +9,25 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { modosPagosDto, UpdatModosPagosDto } from '../dtos/modospagos.dto';
+import { ModosPagosDto, UpdatModosPagosDto } from '../dtos/modospagos.dto';
+import { modospagos } from '../entities/modospagos.entity';
 
 @Controller('modos_pagos')
 export class ModosPagosController {
   constructor(private modosPagosService: ModosPagosService) {}
 
   @Get()
-  getAll(): Promise<modosPagosDto[]> {
+  getAll(): Promise<modospagos[]> {
     return this.modosPagosService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<modosPagosDto> {
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<modospagos> {
     return this.modosPagosService.findOne(id);
   }
 
   @Post()
-  create(@Body() body: modosPagosDto): Promise<modosPagosDto> {
+  create(@Body() body: ModosPagosDto): Promise<modospagos> {
     return this.modosPagosService.create(body);
   }
 
@@ -34,7 +35,7 @@ export class ModosPagosController {
   update(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() body: UpdatModosPagosDto,
-  ): Promise<modosPagosDto> {
+  ): Promise<modospagos> {
     return this.modosPagosService.update(id, body);
   }
 

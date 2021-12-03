@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ClientesService } from './services/clientes.service';
 import { ClientesController } from './controllers/clientes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { clientes } from './entities/clientes.entity';
-import { facturas } from '@modules/facturas/entities/facturas.entity';
+import { ClientesRepository } from './repository/clientes.repository';
+import { FacturasRepository } from '@modules/facturas/repository/facturas.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([clientes, facturas])],
+  imports: [TypeOrmModule.forFeature([ClientesRepository, FacturasRepository])],
   providers: [ClientesService],
   controllers: [ClientesController],
 })

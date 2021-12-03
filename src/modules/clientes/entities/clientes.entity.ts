@@ -12,9 +12,9 @@ import { facturas } from '../../facturas/entities/facturas.entity';
 @Entity({ name: 'clientes' })
 export class clientes {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_cliente' })
-  public id_cliente: number;
+  public id: number;
 
-  @OneToMany(() => facturas, (facturas) => facturas.id_cliente)
+  @OneToMany(() => facturas, (facturas) => facturas.idCliente)
   public facturas: facturas[];
 
   @Column({ type: 'varchar', length: 50, nullable: false, name: 'nombre' })
@@ -24,7 +24,7 @@ export class clientes {
   public apellido: string;
 
   @Column({
-    type: 'integer',
+    type: 'bigint',
     default: 0,
     unique: true,
     nullable: false,
@@ -35,8 +35,11 @@ export class clientes {
   @Column({ type: 'varchar', default: 0, nullable: false, name: 'correo' })
   public correo: string;
 
-  @Column({ type: 'integer', default: 0, nullable: false, name: 'telefono' })
+  @Column({ type: 'bigint', default: 0, nullable: false, name: 'telefono' })
   public telefono: number;
+
+  @Column({ type: 'integer', default: 1, nullable: false, name: 'estado' })
+  public estado: number;
 
   @Exclude()
   @CreateDateColumn({

@@ -8,24 +8,25 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { facturasDto, RegistrosDto } from '../dtos/facturas.dto';
+import { FacturasDto } from '../dtos/facturas.dto';
+import { facturas } from '../entities/facturas.entity';
 
 @Controller('facturas')
 export class FacturasController {
   constructor(private facturasService: FacturasService) {}
 
   @Get()
-  getAll(): Promise<facturasDto[]> {
+  getAll(): Promise<facturas[]> {
     return this.facturasService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<facturasDto> {
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<facturas> {
     return this.facturasService.findOne(id);
   }
 
   @Post('registrar')
-  create(@Body() body: RegistrosDto): Promise<facturasDto> {
+  create(@Body() body: FacturasDto): Promise<facturas> {
     return this.facturasService.create(body);
   }
 

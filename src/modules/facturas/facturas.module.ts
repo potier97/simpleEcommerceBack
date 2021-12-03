@@ -2,14 +2,21 @@ import { Module } from '@nestjs/common';
 import { FacturasService } from './services/facturas.service';
 import { FacturasController } from './controllers/facturas.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { facturas } from './entities/facturas.entity';
-import { clientes } from '@modules/clientes/entities/clientes.entity';
-import { modospagos } from '@modules/modos-pagos/entities/modospagos.entity';
-import { detalles } from '@modules/detalles/entities/detalles.entity';
+import { FacturasRepository } from './repository/facturas.repository';
+import { ClientesRepository } from '@modules/clientes/repository/clientes.repository';
+import { ModosPagosRepository } from '@modules/modos-pagos/repository/modos-pagos.repository';
+import { DetallesRepository } from '@modules/detalles/repository/detalles.repository';
+import { ProductosRepository } from '@modules/productos/repository/productos.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([facturas, clientes, modospagos, detalles]),
+    TypeOrmModule.forFeature([
+      FacturasRepository,
+      ClientesRepository,
+      ModosPagosRepository,
+      DetallesRepository,
+      ProductosRepository,
+    ]),
   ],
   providers: [FacturasService],
   controllers: [FacturasController],

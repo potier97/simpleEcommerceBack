@@ -16,23 +16,23 @@ import { clientes } from '../../clientes/entities/clientes.entity';
 @Entity({ name: 'facturas' })
 export class facturas {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_factura' })
-  public id_factura: number;
+  public id: number;
 
-  @OneToMany(() => detalles, (detalles) => detalles.id_factura)
+  @OneToMany(() => detalles, (detalles) => detalles.idFactura)
   public detalles: detalles[];
 
   @ManyToOne(() => clientes, (clientes) => clientes.facturas)
   @JoinColumn({ name: 'id_cliente' })
-  public id_cliente: clientes;
+  public idCliente: clientes;
 
   @ManyToOne(() => modospagos, (modospagos) => modospagos.facturas)
   @JoinColumn({ name: 'id_modo_pago' })
-  public id_modo_pago: modospagos;
+  public idModoPago: modospagos;
 
-  @Column({ type: 'integer', default: 0, nullable: false, name: 'total' })
+  @Column({ type: 'bigint', default: 0, nullable: false, name: 'total' })
   public total: number;
 
-  @Column({ type: 'integer', default: 0, nullable: false, name: 'subtotal' })
+  @Column({ type: 'bigint', default: 0, nullable: false, name: 'subtotal' })
   public subtotal: number;
 
   @Column({
@@ -45,6 +45,9 @@ export class facturas {
 
   @Column({ type: 'integer', default: 0, nullable: false, name: 'iva' })
   public iva: number;
+
+  @Column({ type: 'integer', default: 1, nullable: false, name: 'estado' })
+  public estado: number;
 
   @Exclude()
   @CreateDateColumn({

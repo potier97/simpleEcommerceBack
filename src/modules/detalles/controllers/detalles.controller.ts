@@ -1,18 +1,18 @@
 import { DetallesService } from '../services/detalles.service';
 import { Controller, Delete, Get, Param, ParseIntPipe } from '@nestjs/common';
-import { detallesDto } from '../dtos/detalles.dto';
+import { detalles } from '../entities/detalles.entity';
 
 @Controller('detalles')
 export class DetallesController {
   constructor(private detallesService: DetallesService) {}
 
   @Get()
-  getAll(): Promise<detallesDto[]> {
+  getAll(): Promise<detalles[]> {
     return this.detallesService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<detallesDto> {
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<detalles> {
     return this.detallesService.findOne(id);
   }
 

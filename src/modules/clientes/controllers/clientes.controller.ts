@@ -8,7 +8,8 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { clientesDto, UpdateClientesDto } from '../dtos/clientes.dto';
+import { ClientesDto, UpdateClientesDto } from '../dtos/clientes.dto';
+import { clientes } from '../entities/clientes.entity';
 import { ClientesService } from '../services/clientes.service';
 
 @Controller('clientes')
@@ -16,17 +17,17 @@ export class ClientesController {
   constructor(private clientesService: ClientesService) {}
 
   @Get()
-  getAll(): Promise<clientesDto[]> {
+  getAll(): Promise<clientes[]> {
     return this.clientesService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<clientesDto> {
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<clientes> {
     return this.clientesService.findOne(id);
   }
 
   @Post()
-  create(@Body() body: clientesDto): Promise<clientesDto> {
+  create(@Body() body: ClientesDto): Promise<clientes> {
     return this.clientesService.create(body);
   }
 
@@ -34,7 +35,7 @@ export class ClientesController {
   update(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() body: UpdateClientesDto,
-  ): Promise<clientesDto> {
+  ): Promise<clientes> {
     return this.clientesService.update(id, body);
   }
 

@@ -1,10 +1,12 @@
 {
-  "name": "be-c3-g9",
+  "name": "bemintic",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": {
+    "name": "Nicolas Potier"
+  },
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -28,8 +30,14 @@
     "migrations:run": "yarn typeorm migration:run",
     "migrations:show": "yarn typeorm migration:show",
     "migrations:drop": "yarn typeorm schema:drop",
-    "migrations:revert": "yarn typeorm migration:revert"
-
+    "migrations:revert": "yarn typeorm migration:revert",
+    "docker:build:dev": "docker build --target development --build-arg NODE_ENV=prod -t tienda-dok-dev .",
+    "docker:build:prod": "docker build --target production --build-arg NODE_ENV=prod -t tienda-dok-prod .",
+    "docker:run:dev": "docker run -dp 4200:3002 tienda-dok-dev",
+    "docker:run:prod": "docker run -dp 4200:3002 tienda-dok-prod",
+    "compose:up:prod": "docker-compose up -d prod",
+    "compose:up:dev": "docker-compose up -d dev",
+    "compose:down": "docker-compose down"
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.1",
@@ -41,7 +49,7 @@
     "@nestjs/schedule": "^1.0.1",
     "@nestjs/swagger": "^5.1.1",
     "@nestjs/typeorm": "^8.0.2",
-    "class-transformer": "^0.4.0",
+    "class-transformer": "^0.5.0",
     "class-validator": "^0.13.1",
     "comment-parser": "^1.2.3",
     "compression": "^1.7.4",
@@ -85,7 +93,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.2"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -12,13 +12,16 @@ import {
 @Entity({ name: 'modos_pagos' })
 export class modospagos {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_modo_pago' })
-  public id_modo_pago: number;
+  public id: number;
 
-  @OneToMany(() => facturas, (facturas) => facturas.id_modo_pago)
+  @OneToMany(() => facturas, (facturas) => facturas.idModoPago)
   public facturas: facturas[];
 
   @Column({ type: 'varchar', length: 50, nullable: false, name: 'tipo' })
   public tipo: string;
+
+  @Column({ type: 'integer', default: 1, nullable: false, name: 'estado' })
+  public estado: number;
 
   @Exclude()
   @CreateDateColumn({

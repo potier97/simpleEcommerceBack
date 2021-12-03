@@ -3,7 +3,7 @@ import { ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import envConfig from '@configdata/env-config';
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
 
 @Global()
 @Module({

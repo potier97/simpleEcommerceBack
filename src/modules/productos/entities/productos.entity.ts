@@ -13,23 +13,26 @@ import {
 @Entity({ name: 'productos' })
 export class productos {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id_producto' })
-  public id_producto: number;
+  public id: number;
 
-  @OneToMany(() => detalles, (detalles) => detalles.id_producto)
+  @OneToMany(() => detalles, (detalles) => detalles.idProducto)
   public detalles: detalles[];
 
   @Index({ unique: true })
-  @Column({ type: 'integer', default: 0, nullable: false, name: 'dni' })
+  @Column({ type: 'bigint', default: 0, nullable: false, name: 'dni' })
   public dni: number;
 
   @Column({ type: 'integer', default: 0, nullable: false, name: 'cantidad' })
   public cantidad: number;
 
-  @Column({ type: 'integer', default: 0, nullable: false, name: 'precio' })
+  @Column({ type: 'bigint', default: 0, nullable: false, name: 'precio' })
   public precio: number;
 
   @Column({ type: 'varchar', length: 80, nullable: false, name: 'nombre' })
   public nombre: string;
+
+  @Column({ type: 'integer', default: 1, nullable: false, name: 'estado' })
+  public estado: number;
 
   @Exclude()
   @CreateDateColumn({

@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
-export class clientesDto {
+export class ClientesDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: 'Nombre del cliente' })
@@ -35,6 +35,12 @@ export class clientesDto {
   @IsNotEmpty()
   @ApiProperty({ description: 'Dirección de correo del usuario' })
   public readonly correo: string;
+
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty({ description: 'Estado del dato' })
+  public readonly estado: number;
 }
 
-export class UpdateClientesDto extends PartialType(clientesDto) {}
+export class UpdateClientesDto extends PartialType(ClientesDto) {}

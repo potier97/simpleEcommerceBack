@@ -9,24 +9,25 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { productosDto, UpdateProductosDto } from '../dtos/productos.dto';
+import { ProductosDto, UpdateProductosDto } from '../dtos/productos.dto';
+import { productos } from '../entities/productos.entity';
 
 @Controller('productos')
 export class ProductosController {
   constructor(private productosService: ProductosService) {}
 
   @Get()
-  getAll(): Promise<productosDto[]> {
+  getAll(): Promise<productos[]> {
     return this.productosService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<productosDto> {
+  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<productos> {
     return this.productosService.findOne(id);
   }
 
   @Post()
-  create(@Body() body: productosDto): Promise<productosDto> {
+  create(@Body() body: ProductosDto): Promise<productos> {
     return this.productosService.create(body);
   }
 
@@ -34,7 +35,7 @@ export class ProductosController {
   update(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() body: UpdateProductosDto,
-  ): Promise<productosDto> {
+  ): Promise<productos> {
     return this.productosService.update(id, body);
   }
 
