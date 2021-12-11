@@ -41,7 +41,7 @@
     "heroku:login": "heroku login",
     "heroku:container": "heroku container:login",
     "heroku:container:push": "heroku container:push web -a simple-commerce-back",
-    "heroku:release:push": "heroku container:release web -a simple-commerce-back"
+    "heroku:container:release": "heroku container:release web -a simple-commerce-back"
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.1",
