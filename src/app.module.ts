@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigurationsModule } from '@configdata/configurationsModule.module';
 import { Configuration } from '@configdata/config.keys';
 import { ProductosModule } from '@modules/productos/productos.module';
@@ -18,6 +19,7 @@ import { ConfigService } from '@nestjs/config';
     FacturasModule,
     ClientesModule,
     ModosPagosModule,
+    GraphQLModule.forRoot({}),
   ],
   controllers: [],
   providers: [],
