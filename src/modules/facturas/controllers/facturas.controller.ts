@@ -1,37 +1,42 @@
-import { FacturasService } from '../services/facturas.service';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Controller, Logger, ParseIntPipe, UsePipes } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
+
+//Importados
 import { FacturasDto } from '../dtos/facturas.dto';
 import { facturas } from '../entities/facturas.entity';
+import {
+  invoiceDeleteTp,
+  invoiceGetAllTp,
+  invoiceGetByIdTp,
+  newBuyTp,
+} from '@configdata/path';
+import { FacturasService } from '../services/facturas.service';
 
 @Controller('facturas')
 export class FacturasController {
+  private readonly logger = new Logger(FacturasController.name);
+
   constructor(private facturasService: FacturasService) {}
 
-  @Get()
-  getAll(): Promise<facturas[]> {
+  @MessagePattern(invoiceGetAllTp)
+  async getAll(): Promise<facturas[]> {
     return this.facturasService.findAll();
   }
 
-  @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<facturas> {
+  @UsePipes(new ParseIntPipe())
+  @MessagePattern(invoiceGetByIdTp)
+  async getOne(id: number): Promise<facturas> {
     return this.facturasService.findOne(id);
   }
 
-  @Post('registrar')
-  create(@Body() body: FacturasDto): Promise<facturas> {
-    return this.facturasService.create(body);
+  @UsePipes(new ParseIntPipe())
+  @MessagePattern(invoiceDeleteTp)
+  async delete(id: number): Promise<boolean> {
+    return this.facturasService.delete(id);
   }
 
-  @Delete(':id')
-  delete(@Param('id', new ParseIntPipe()) id: number): Promise<boolean> {
-    return this.facturasService.delete(id);
+  @MessagePattern(newBuyTp)
+  async newBuyRegister(body: FacturasDto): Promise<facturas> {
+    return this.facturasService.create(body);
   }
 }

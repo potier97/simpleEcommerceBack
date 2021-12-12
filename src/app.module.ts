@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigurationsModule } from '@configdata/configurationsModule.module';
 import { Configuration } from '@configdata/config.keys';
 import { ProductosModule } from '@modules/productos/productos.module';
@@ -19,14 +18,13 @@ import { ConfigService } from '@nestjs/config';
     FacturasModule,
     ClientesModule,
     ModosPagosModule,
-    GraphQLModule.forRoot({}),
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule {
-  static port: number;
+  static urlAmqp: string;
   constructor(private readonly configService: ConfigService) {
-    AppModule.port = this.configService.get<number>(Configuration.PORT);
+    AppModule.urlAmqp = this.configService.get<string>(Configuration.AMQP_URL);
   }
 }

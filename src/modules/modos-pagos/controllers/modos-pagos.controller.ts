@@ -1,46 +1,50 @@
-import { ModosPagosService } from '../services/modos-pagos.service';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Controller, Logger, ParseIntPipe, UsePipes } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
+
+//Importados
 import { ModosPagosDto, UpdatModosPagosDto } from '../dtos/modospagos.dto';
 import { modospagos } from '../entities/modospagos.entity';
+import {
+  payModeCreateTp,
+  payModeDeleteTp,
+  payModeGetAllTp,
+  payModeGetByIdTp,
+  payModeUpdateTp,
+} from '@configdata/path';
+import { ModosPagosService } from '../services/modos-pagos.service';
 
 @Controller('modos_pagos')
 export class ModosPagosController {
+  private readonly logger = new Logger(ModosPagosController.name);
+
   constructor(private modosPagosService: ModosPagosService) {}
 
-  @Get()
-  getAll(): Promise<modospagos[]> {
+  @MessagePattern(payModeGetAllTp)
+  async getAll(): Promise<modospagos[]> {
     return this.modosPagosService.findAll();
   }
 
-  @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<modospagos> {
+  @UsePipes(new ParseIntPipe())
+  @MessagePattern(payModeGetByIdTp)
+  async getOne(id: number): Promise<modospagos> {
     return this.modosPagosService.findOne(id);
   }
 
-  @Post()
-  create(@Body() body: ModosPagosDto): Promise<modospagos> {
+  @MessagePattern(payModeCreateTp)
+  async create(body: ModosPagosDto): Promise<modospagos> {
     return this.modosPagosService.create(body);
   }
 
-  @Put(':id')
-  update(
-    @Param('id', new ParseIntPipe()) id: number,
-    @Body() body: UpdatModosPagosDto,
-  ): Promise<modospagos> {
+  @MessagePattern(payModeUpdateTp)
+  async update(data: any): Promise<modospagos> {
+    const id: number = data.id;
+    const body: UpdatModosPagosDto = data.body;
     return this.modosPagosService.update(id, body);
   }
 
-  @Delete(':id')
-  delete(@Param('id', new ParseIntPipe()) id: number): Promise<boolean> {
+  @UsePipes(new ParseIntPipe())
+  @MessagePattern(payModeDeleteTp)
+  async delete(id: number): Promise<boolean> {
     return this.modosPagosService.delete(id);
   }
 }

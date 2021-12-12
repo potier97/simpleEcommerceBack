@@ -13,5 +13,10 @@ export default registerAs('config', () => {
       user: process.env.POSTGRES_USER,
       host: process.env.POSTGRES_HOST,
     },
+    amq: {
+      url: process.env.AMQP_URL,
+      queue: process.env.AMQP_QUEUE,
+      name: process.env.AMQP_NAME,
+    },
   };
 });

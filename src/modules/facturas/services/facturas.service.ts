@@ -1,4 +1,5 @@
 import { ClientesRepository } from '@modules/clientes/repository/clientes.repository';
+import { DetallesDto } from '@modules/detalles/dtos/detalles.dto';
 import { detalles } from '@modules/detalles/entities/detalles.entity';
 import { DetallesRepository } from '@modules/detalles/repository/detalles.repository';
 import { ModosPagosRepository } from '@modules/modos-pagos/repository/modos-pagos.repository';
@@ -94,7 +95,7 @@ export class FacturasService {
       const productsToBuyList: any[] = [];
       const promises = body.details.map(async (product: DetallesCompraDto) => {
         if (product.cantidad > 0 && product.id > 0) {
-          console.log('chao mundo -> ', product);
+          // console.log('chao mundo -> ', product);
           const currentProduct = await this.productosRepository.findOne(
             product.id,
           );
@@ -120,7 +121,7 @@ export class FacturasService {
           }
           //Vamos sumando el costo actual de la compra
           totalCompra += currentProduct.precio * product.cantidad;
-          console.log('totalCompra mundo -> ', totalCompra);
+          // console.log('totalCompra mundo -> ', totalCompra);
           //Armamos un objeto para obtener todos los datos del producto a comprar
           productsToBuyList.push(currentProduct);
           return {
@@ -141,7 +142,8 @@ export class FacturasService {
       console.log('==================================================');
       console.log('============ Lista de Productos de venta =========');
       console.log(productsToBuyList);
-      // console.log(totalCompra);
+      console.log(`Total de la compra ${totalCompra}`);
+      // console.log(`Listado actualizado  ${promises}`);
       console.log('==================================================');
       console.log('==================================================');
       console.log('');
@@ -191,13 +193,13 @@ export class FacturasService {
       //Generamos la factura actual
       const invoice = await this.facturasRepository.save(newData);
 
-      console.log('');
-      console.log('==================================================');
-      console.log('============ Factura a ser registrada  ===========');
-      console.log(newData);
-      console.log('==================================================');
-      console.log('==================================================');
-      console.log('');
+      // console.log('');
+      // console.log('==================================================');
+      // console.log('============ Factura a ser registrada  ===========');
+      // console.log(newData);
+      // console.log('==================================================');
+      // console.log('==================================================');
+      // console.log('');
       //Actualizamos la lista del stock de los productos y generamos el detalle
       const promisesTwo = productsToBuyList.map(
         async (p: productos, index: number) => {
@@ -210,22 +212,23 @@ export class FacturasService {
           this.productosRepository.merge(p, newDataProduct);
           const newUpdateData = await this.productosRepository.save(p);
           //Generar el detalle
-          const detailBody: detalles = {
+          const detailBody: any = {
             cantidad: quantityProduct,
             estado: 1,
             idFactura: invoice,
             idProducto: newUpdateData,
             nombre: newUpdateData.nombre,
             precio: newUpdateData.precio,
-            ActualizadoEn: new Date(),
-            creadoEn: new Date(),
-            id: 1,
           };
           const newDataDetails = this.detallesRepository.create(detailBody);
-          console.log('Registro del detailBody');
-          console.log(detailBody);
-          console.log(newDataDetails);
+          // console.log('==================================================');
+          // console.log(`Registro del detailBody ${index}`);
+          // console.log(newDataDetails);
+          // console.log('==================================================');
           await this.detallesRepository.save(newDataDetails);
+          return {
+            ...p,
+          };
         },
       );
 

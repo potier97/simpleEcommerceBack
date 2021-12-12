@@ -20,6 +20,10 @@ import envConfig from './env-config';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_HOST: Joi.string().required(),
+        // Conexión a RABITMQ
+        AMQP_URL: Joi.string().required(),
+        AMQP_QUEUE: Joi.string().required(),
+        AMQP_NAME: Joi.string().required(),
       }),
     }),
   ],

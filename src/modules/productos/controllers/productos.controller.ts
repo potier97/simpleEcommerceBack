@@ -1,46 +1,50 @@
-import { ProductosService } from '../services/productos.service';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Controller, Logger, ParseIntPipe, UsePipes } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
+
+//Importados
 import { ProductosDto, UpdateProductosDto } from '../dtos/productos.dto';
 import { productos } from '../entities/productos.entity';
+import {
+  productCreateTp,
+  productDeleteTp,
+  productGetAllTp,
+  productGetByIdTp,
+  productUpdateTp,
+} from '@configdata/path';
+import { ProductosService } from '../services/productos.service';
 
 @Controller('productos')
 export class ProductosController {
+  private readonly logger = new Logger(ProductosController.name);
+
   constructor(private productosService: ProductosService) {}
 
-  @Get()
-  getAll(): Promise<productos[]> {
+  @MessagePattern(productGetAllTp)
+  async getAll(): Promise<productos[]> {
     return this.productosService.findAll();
   }
 
-  @Get(':id')
-  getOne(@Param('id', new ParseIntPipe()) id: number): Promise<productos> {
+  @UsePipes(new ParseIntPipe())
+  @MessagePattern(productGetByIdTp)
+  async getOne(id: number): Promise<productos> {
     return this.productosService.findOne(id);
   }
 
-  @Post()
-  create(@Body() body: ProductosDto): Promise<productos> {
+  @MessagePattern(productCreateTp)
+  async create(body: ProductosDto): Promise<productos> {
     return this.productosService.create(body);
   }
 
-  @Put(':id')
-  update(
-    @Param('id', new ParseIntPipe()) id: number,
-    @Body() body: UpdateProductosDto,
-  ): Promise<productos> {
+  @MessagePattern(productUpdateTp)
+  async update(data: any): Promise<productos> {
+    const id: number = data.id;
+    const body: UpdateProductosDto = data.body;
     return this.productosService.update(id, body);
   }
 
-  @Delete(':id')
-  delete(@Param('id', new ParseIntPipe()) id: number): Promise<boolean> {
+  @UsePipes(new ParseIntPipe())
+  @MessagePattern(productDeleteTp)
+  async delete(id: number): Promise<boolean> {
     return this.productosService.delete(id);
   }
 }
