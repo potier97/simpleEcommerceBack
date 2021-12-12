@@ -23,8 +23,8 @@ import { ConfigService } from '@nestjs/config';
   providers: [],
 })
 export class AppModule {
-  static urlAmqp: string;
+  static port: number;
   constructor(private readonly configService: ConfigService) {
-    AppModule.urlAmqp = this.configService.get<string>(Configuration.AMQP_URL);
+    AppModule.port = this.configService.get<number>(Configuration.PORT);
   }
 }
